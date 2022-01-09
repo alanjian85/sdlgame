@@ -33,6 +33,10 @@ namespace sdlgame {
         void delay(Uint32 ms) const noexcept {
             SDL_Delay(ms);
         }
+
+        bool poll_event(SDL_Event& event) noexcept {
+            return SDL_PollEvent(&event) != 0;
+        }
     };
 }
 

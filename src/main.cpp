@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "renderer.hpp"
 #include "sdl.hpp"
 #include "surface.hpp"
 #include "window.hpp"
@@ -15,15 +16,16 @@ public:
     static const auto screen_height = 480;
 
     game()
-        : sdl_(SDL_INIT_VIDEO, IMG_INIT_PNG)
+        : sdl_(SDL_INIT_VIDEO, IMG_INIT_PNG),
+          window_("Hello SDL!", screen_width, screen_height, SDL_WINDOW_SHOWN),
+          renderer_(window_, -1, SDL_RENDERER_ACCELERATED)
     {
-        window_ = window("Hello SDL!", screen_width, screen_height, SDL_WINDOW_SHOWN);
-        screen_surface_ = window_.get_surface();
+        renderer_.set_draw_color(0xff, 0xff, 0xff, 0xff);
     }
 
     void load_media() {
-        auto loaded_surface = surface::load_image("res/loaded.png");
-        optimized_surface_ = loaded_surface.convert(screen_surface_.format(), 0);    
+        auto loaded_surface = surface::load_image("res/texture.png");
+        texture_ = renderer_.create_texture_from_surface(loaded_surface);
     }
 
     void run() {
@@ -31,27 +33,23 @@ public:
         SDL_Event event;
 
         while (!quit) {
-            while (SDL_PollEvent(&event) != 0) {
+            while (sdl_.poll_event(event)) {
                 if (event.type == SDL_QUIT) {
                     quit = true;
                 };
             }
 
-            SDL_Rect stretch_rect;
-            stretch_rect.x = 0;
-            stretch_rect.y = 0;
-            stretch_rect.w = screen_width;
-            stretch_rect.h = screen_height;
-            blit_scaled(optimized_surface_, screen_surface_, stretch_rect);
-            window_.update_surface();
+            renderer_.clear();
+            renderer_.copy(texture_);
+            renderer_.present();
         }
     }
 private:
     sdl sdl_;
     window window_;
-    surface_view screen_surface_;
 
-    surface optimized_surface_;
+    renderer renderer_;
+    texture texture_;
 };
 
 int main() {

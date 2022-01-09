@@ -7,9 +7,13 @@
 
 #include <SDL2/SDL.h>
 
+#include "surface.hpp"
+
 namespace sdlgame {
     class window final {
     public:
+        using native_handle_type = SDL_Window*;
+
         window() noexcept : window_(nullptr) {}
         
         window(const char* title, int w, int h, Uint32 flag) {
@@ -41,6 +45,10 @@ namespace sdlgame {
             SDL_DestroyWindow(window_);
         }
 
+        native_handle_type native_handle() const noexcept {
+            return window_;
+        }
+
         operator bool() const noexcept {
             return window_;
         }
@@ -52,7 +60,7 @@ namespace sdlgame {
         void update_surface() noexcept {
             SDL_UpdateWindowSurface(window_);
         }
-    private:
+    protected:
         SDL_Window* window_;
     };
 }
