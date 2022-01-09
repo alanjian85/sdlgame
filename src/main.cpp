@@ -1,4 +1,5 @@
 #include <iostream>
+#include <map>
 
 #include <SDL2/SDL.h>
 
@@ -20,7 +21,11 @@ public:
     }
 
     void load_media() {
-        x_out_ = surface::load_bmp("res/x.bmp");
+        key_press_surfaces[SDLK_UP] = surface::load_bmp("res/up.bmp");
+        key_press_surfaces[SDLK_DOWN] = surface::load_bmp("res/down.bmp");
+        key_press_surfaces[SDLK_LEFT] = surface::load_bmp("res/left.bmp");
+        key_press_surfaces[SDLK_RIGHT] = surface::load_bmp("res/right.bmp"); 
+        key_press_surfaces[SDLK_UNKNOWN] = surface::load_bmp("res/press.bmp");
     }
 
     void run() {
@@ -28,13 +33,31 @@ public:
         SDL_Event event;
 
         while (!quit) {
-            while (SDL_PollEvent(&event) == 1) {
+            while (SDL_PollEvent(&event) != 0) {
                 if (event.type == SDL_QUIT) {
                     quit = true;
+                } else if (event.type == SDL_KEYDOWN) {
+                    switch (event.key.keysym.sym) {
+                        case SDLK_UP:
+                            current_surface_ = key_press_surfaces[SDLK_UP];
+                            break;
+                        case SDLK_DOWN:
+                            current_surface_ = key_press_surfaces[SDLK_DOWN];
+                            break;
+                        case SDLK_LEFT:
+                            current_surface_ = key_press_surfaces[SDLK_LEFT];
+                            break;
+                        case SDLK_RIGHT:
+                            current_surface_ = key_press_surfaces[SDLK_RIGHT];
+                            break;
+                        default:
+                            current_surface_ = key_press_surfaces[SDLK_UNKNOWN];
+                            break;
+                    }
                 }
             }
 
-            blit_surface(x_out_, screen_surface_);
+            blit_surface(current_surface_, screen_surface_);
             window_.update_surface();
         }
     }
@@ -42,7 +65,9 @@ private:
     sdl sdl_;
     window window_;
     window::surface_type screen_surface_;
-    surface x_out_;
+
+    std::map<SDL_Keycode, surface> key_press_surfaces;
+    weak_surface current_surface_;
 };
 
 int main() {
