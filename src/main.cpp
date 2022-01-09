@@ -67,7 +67,7 @@ private:
     window::surface_type screen_surface_;
 
     std::map<SDL_Keycode, surface> key_press_surfaces;
-    weak_surface current_surface_;
+    surface_view current_surface_;
 };
 
 int main() {

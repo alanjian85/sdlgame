@@ -7,10 +7,10 @@
 
 #include <SDL2/SDL.h>
 
-#include "weak_surface.hpp"
+#include "surface_view.hpp"
 
 namespace sdlgame {
-    class surface final : public weak_surface {
+    class surface final : public surface_view {
     public:
         static surface load_bmp(const char* file) {
             auto s = SDL_LoadBMP(file);
@@ -20,7 +20,7 @@ namespace sdlgame {
             return surface(s);
         }
 
-        using weak_surface::weak_surface;
+        using surface_view::surface_view;
 
         surface(surface&& rhs) noexcept {
             surface_ = std::exchange(rhs.surface_, nullptr);

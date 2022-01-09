@@ -1,15 +1,15 @@
-#ifndef SDLGAME_WEAK_SURFACE_HPP
-#define SDLGAME_WEAK_SURFACE_HPP
+#ifndef SDLGAME_SURFACE_VIEW_HPP
+#define SDLGAME_SURFACE_VIEW_HPP
 
 #include <SDL2/SDL.h>
 
 namespace sdlgame {
-    class weak_surface {
+    class surface_view {
     public:
         using native_handle_type = SDL_Surface*;
 
-        weak_surface() noexcept : surface_(nullptr) {}
-        explicit weak_surface(SDL_Surface* surface) noexcept : surface_(surface) {}
+        surface_view() noexcept : surface_(nullptr) {}
+        explicit surface_view(SDL_Surface* surface) noexcept : surface_(surface) {}
 
         native_handle_type native_handle() const noexcept {
             return surface_;
@@ -26,7 +26,7 @@ namespace sdlgame {
         SDL_Surface* surface_;
     };
 
-    inline void blit_surface(weak_surface& src, weak_surface& dst) {
+    inline void blit_surface(surface_view& src, surface_view& dst) {
         SDL_BlitSurface(src.native_handle(), nullptr, dst.native_handle(), nullptr);
     }
 }

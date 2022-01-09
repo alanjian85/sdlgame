@@ -7,12 +7,12 @@
 
 #include <SDL2/SDL.h>
 
-#include "weak_surface.hpp"
+#include "surface_view.hpp"
 
 namespace sdlgame {
     class window final {
     public:
-        using surface_type = weak_surface;
+        using surface_type = surface_view;
 
         window() noexcept : window_(nullptr) {}
         
@@ -49,8 +49,8 @@ namespace sdlgame {
             return window_;
         }
 
-        weak_surface get_surface() const noexcept {
-            return weak_surface(SDL_GetWindowSurface(window_));
+        surface_view get_surface() const noexcept {
+            return surface_view(SDL_GetWindowSurface(window_));
         }
 
         void update_surface() noexcept {
