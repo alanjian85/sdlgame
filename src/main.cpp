@@ -15,7 +15,7 @@ public:
     game()
         : sdl_(SDL_INIT_VIDEO)
     {
-        window_ = window("Hello SDL!", screen_width, screen_width, SDL_WINDOW_SHOWN);
+        window_ = window("Hello SDL!", screen_width, screen_height, SDL_WINDOW_SHOWN);
         screen_surface_ = window_.get_surface();
     }
 
