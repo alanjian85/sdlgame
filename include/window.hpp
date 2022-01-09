@@ -1,16 +1,19 @@
 #ifndef SDLGAME_WINDOW_HPP
 #define SDLGAME_WINDOW_HPP
 
+#include <algorithm>
 #include <string>
 #include <system_error>
 
 #include <SDL2/SDL.h>
 
-#include "surface.hpp"
+#include "weak_surface.hpp"
 
 namespace sdlgame {
     class window final {
     public:
+        using surface_type = weak_surface;
+
         window() noexcept : window_(nullptr) {}
         
         window(const char* title, int w, int h, Uint32 flag) {
@@ -28,7 +31,17 @@ namespace sdlgame {
             }
         }
 
-        ~window() {
+        window(window&& rhs) noexcept {
+            window_ = std::exchange(rhs.window_, nullptr);
+        }
+
+        window& operator=(window&& rhs) noexcept {
+            SDL_DestroyWindow(window_);
+            window_ = std::exchange(rhs.window_, nullptr);
+            return *this;
+        }
+
+        ~window() noexcept {
             SDL_DestroyWindow(window_);
         }
 
@@ -36,8 +49,8 @@ namespace sdlgame {
             return window_;
         }
 
-        surface get_surface() const noexcept {
-            return surface(SDL_GetWindowSurface(window_));
+        weak_surface get_surface() const noexcept {
+            return weak_surface(SDL_GetWindowSurface(window_));
         }
 
         void update_surface() noexcept {

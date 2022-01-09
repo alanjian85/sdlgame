@@ -9,6 +9,9 @@
 namespace sdlgame {
     class sdl final {
     public:
+        sdl(const sdl&) = delete;
+        sdl& operator=(const sdl&) = delete;
+
         explicit sdl(Uint32 flags) {
             auto status = SDL_Init(flags);
             if (status < 0) {
@@ -17,7 +20,7 @@ namespace sdlgame {
             }
         }
 
-        ~sdl() {
+        ~sdl() noexcept {
             SDL_Quit();
         }
 
