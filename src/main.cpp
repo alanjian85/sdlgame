@@ -21,11 +21,8 @@ public:
     }
 
     void load_media() {
-        key_press_surfaces[SDLK_UP] = surface::load_bmp("res/up.bmp");
-        key_press_surfaces[SDLK_DOWN] = surface::load_bmp("res/down.bmp");
-        key_press_surfaces[SDLK_LEFT] = surface::load_bmp("res/left.bmp");
-        key_press_surfaces[SDLK_RIGHT] = surface::load_bmp("res/right.bmp"); 
-        key_press_surfaces[SDLK_UNKNOWN] = surface::load_bmp("res/press.bmp");
+        auto loaded_surface = surface::load_bmp("res/stretch.bmp");
+        optimized_surface_ = loaded_surface.convert(screen_surface_.format(), 0);    
     }
 
     void run() {
@@ -36,38 +33,24 @@ public:
             while (SDL_PollEvent(&event) != 0) {
                 if (event.type == SDL_QUIT) {
                     quit = true;
-                } else if (event.type == SDL_KEYDOWN) {
-                    switch (event.key.keysym.sym) {
-                        case SDLK_UP:
-                            current_surface_ = key_press_surfaces[SDLK_UP];
-                            break;
-                        case SDLK_DOWN:
-                            current_surface_ = key_press_surfaces[SDLK_DOWN];
-                            break;
-                        case SDLK_LEFT:
-                            current_surface_ = key_press_surfaces[SDLK_LEFT];
-                            break;
-                        case SDLK_RIGHT:
-                            current_surface_ = key_press_surfaces[SDLK_RIGHT];
-                            break;
-                        default:
-                            current_surface_ = key_press_surfaces[SDLK_UNKNOWN];
-                            break;
-                    }
-                }
+                };
             }
 
-            blit_surface(current_surface_, screen_surface_);
+            SDL_Rect stretch_rect;
+            stretch_rect.x = 0;
+            stretch_rect.y = 0;
+            stretch_rect.w = screen_width;
+            stretch_rect.h = screen_height;
+            blit_scaled(optimized_surface_, screen_surface_, stretch_rect);
             window_.update_surface();
         }
     }
 private:
     sdl sdl_;
     window window_;
-    window::surface_type screen_surface_;
+    surface_view screen_surface_;
 
-    std::map<SDL_Keycode, surface> key_press_surfaces;
-    surface_view current_surface_;
+    surface optimized_surface_;
 };
 
 int main() {

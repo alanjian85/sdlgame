@@ -7,13 +7,9 @@
 
 #include <SDL2/SDL.h>
 
-#include "surface_view.hpp"
-
 namespace sdlgame {
     class window final {
     public:
-        using surface_type = surface_view;
-
         window() noexcept : window_(nullptr) {}
         
         window(const char* title, int w, int h, Uint32 flag) {
