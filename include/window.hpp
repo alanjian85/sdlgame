@@ -1,6 +1,7 @@
 #ifndef SDLGAME_WINDOW_HPP
 #define SDLGAME_WINDOW_HPP
 
+#include <string>
 #include <system_error>
 
 #include <SDL2/SDL.h>
@@ -23,7 +24,7 @@ namespace sdlgame {
             );
 
             if (!window_) {
-                throw std::system_error(std::error_code(), SDL_GetError());
+                throw std::system_error(std::error_code(), std::string("Window could not be created! SDL_Error: ") + SDL_GetError());
             }
         }
 
