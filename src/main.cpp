@@ -20,19 +20,29 @@ public:
     }
 
     void load_media() {
-        hello_world_ = surface::load_bmp("res/hello_world.bmp");
+        x_out_ = surface::load_bmp("res/x.bmp");
     }
 
     void run() {
-        blit_surface(hello_world_, screen_surface_);
-        window_.update_surface();
-        sdl_.delay(2000);
+        bool quit = false;
+        SDL_Event event;
+
+        while (!quit) {
+            while (SDL_PollEvent(&event) == 1) {
+                if (event.type == SDL_QUIT) {
+                    quit = true;
+                }
+            }
+
+            blit_surface(x_out_, screen_surface_);
+            window_.update_surface();
+        }
     }
 private:
     sdl sdl_;
     window window_;
     window::surface_type screen_surface_;
-    surface hello_world_;
+    surface x_out_;
 };
 
 int main() {
