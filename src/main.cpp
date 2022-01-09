@@ -2,6 +2,7 @@
 #include <map>
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include "sdl.hpp"
 #include "surface.hpp"
@@ -14,14 +15,14 @@ public:
     static const auto screen_height = 480;
 
     game()
-        : sdl_(SDL_INIT_VIDEO)
+        : sdl_(SDL_INIT_VIDEO, IMG_INIT_PNG)
     {
         window_ = window("Hello SDL!", screen_width, screen_height, SDL_WINDOW_SHOWN);
         screen_surface_ = window_.get_surface();
     }
 
     void load_media() {
-        auto loaded_surface = surface::load_bmp("res/stretch.bmp");
+        auto loaded_surface = surface::load_image("res/loaded.png");
         optimized_surface_ = loaded_surface.convert(screen_surface_.format(), 0);    
     }
 

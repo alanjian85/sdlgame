@@ -51,7 +51,15 @@ namespace sdlgame {
         static surface load_bmp(const char* file) {
             auto s = SDL_LoadBMP(file);
             if (!s) {
-                throw std::system_error(std::error_code(), std::string("Unable to load image ") + file + "! SDL_Error: " + SDL_GetError());
+                throw std::system_error(std::error_code(), std::string("Unable to load BMP ") + file + "! SDL Error: " + SDL_GetError());
+            }
+            return surface(s);
+        }
+
+        static surface load_image(const char* file) {
+            auto s = IMG_Load(file);
+            if (!s) {
+                throw std::system_error(std::error_code(), std::string("Unable to load image ") + file + "! SDL_image Error: " + SDL_GetError());
             }
             return surface(s);
         }

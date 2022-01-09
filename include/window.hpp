@@ -23,7 +23,7 @@ namespace sdlgame {
             );
 
             if (!window_) {
-                throw std::system_error(std::error_code(), std::string("Window could not be created! SDL_Error: ") + SDL_GetError());
+                throw std::system_error(std::error_code(), std::string("Window could not be created! SDL Error: ") + SDL_GetError());
             }
         }
 
