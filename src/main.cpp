@@ -17,7 +17,9 @@ int main() {
         auto w = window("Hello SDL!", screen_width, screen_height, SDL_WINDOW_SHOWN);
         auto screen_surface = w.get_surface();
 
-        screen_surface.fill_rect(screen_surface.map_color(0xff, 0xff, 0xff));
+        auto hello_world = surface::load_bmp("res/hello_world.bmp");
+
+        blit_surface(hello_world, screen_surface);
         w.update_surface();
 
         SDL_Delay(2000);
