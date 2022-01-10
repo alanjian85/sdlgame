@@ -56,6 +56,10 @@ namespace sdlgame {
             SDL_RenderCopy(renderer_, tex.native_handle(), nullptr, nullptr);
         }
 
+        void copy(const texture& tex, SDL_Rect dstrect) noexcept {
+            SDL_RenderCopy(renderer_, tex.native_handle(), nullptr, &dstrect);
+        }
+
         void fill_rect(SDL_Rect rect) noexcept {
             SDL_RenderFillRect(renderer_, &rect);
         }

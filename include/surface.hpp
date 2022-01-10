@@ -34,6 +34,10 @@ namespace sdlgame {
         }
 
         surface convert(const SDL_PixelFormat* format, Uint32 flags) const noexcept;
+    
+        void set_color_key(Uint32 key) noexcept {
+            SDL_SetColorKey(surface_, SDL_TRUE, key);
+        }
     protected:
         SDL_Surface* surface_;
     };

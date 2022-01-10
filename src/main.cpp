@@ -24,8 +24,12 @@ public:
     }
 
     void load_media() {
-        auto loaded_surface = surface::load_image("res/viewport.png");
-        texture_ = renderer_.create_texture(loaded_surface);
+        auto foo_surface = surface::load_image("res/foo.png");
+        foo_surface.set_color_key(foo_surface.map_color(0, 0xff, 0xff));
+        foo_texture_ = renderer_.create_texture(foo_surface);
+
+        auto background_surface = surface::load_image("res/background.png");
+        background_texture_ = renderer_.create_texture(background_surface);
     }
 
     void run() {
@@ -39,29 +43,9 @@ public:
                 };
             }
 
-            SDL_Rect top_left_viewport;
-            top_left_viewport.x = 0;
-            top_left_viewport.y = 0;
-            top_left_viewport.w = screen_width / 2;
-            top_left_viewport.h = screen_height / 2;
-            renderer_.set_viewport(top_left_viewport);
-            renderer_.copy(texture_);
+            renderer_.set_draw_color(0xff, 0xff, 0xff, 0xff);
+            renderer_.clear();
 
-            SDL_Rect top_right_viewport;
-            top_right_viewport.x = screen_width / 2;
-            top_right_viewport.y = 0;
-            top_right_viewport.w = screen_width / 2;
-            top_right_viewport.h = screen_height / 2;
-            renderer_.set_viewport(top_right_viewport);
-            renderer_.copy(texture_);
-
-            SDL_Rect bottom_viewport;
-            bottom_viewport.x = 0;
-            bottom_viewport.y = screen_height / 2;
-            bottom_viewport.w = screen_width;
-            bottom_viewport.h = screen_height / 2;
-            renderer_.set_viewport(bottom_viewport);
-            renderer_.copy(texture_);
 
             renderer_.present();
         }
@@ -71,7 +55,8 @@ private:
     window window_;
 
     renderer renderer_;
-    texture texture_;
+    texture foo_texture_;
+    texture background_texture_;
 };
 
 int main() {
