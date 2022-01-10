@@ -40,7 +40,7 @@ namespace sdlgame {
             SDL_SetRenderDrawColor(renderer_, r, g, b, a);
         }
 
-        texture create_texture_from_surface(surface_view s) noexcept {
+        texture create_texture(surface_view s) noexcept {
             return texture(SDL_CreateTextureFromSurface(renderer_, s.native_handle()));
         }
 
@@ -70,6 +70,10 @@ namespace sdlgame {
 
         void draw_point(int x, int y) noexcept {
             SDL_RenderDrawPoint(renderer_, x, y);
+        }
+
+        void set_viewport(SDL_Rect rect) noexcept {
+            SDL_RenderSetViewport(renderer_, &rect);
         }
     protected:
         SDL_Renderer* renderer_;
