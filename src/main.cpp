@@ -20,12 +20,11 @@ public:
           window_("Hello SDL!", screen_width, screen_height, SDL_WINDOW_SHOWN),
           renderer_(window_, -1, SDL_RENDERER_ACCELERATED)
     {
-        renderer_.set_draw_color(0xff, 0xff, 0xff, 0xff);
+
     }
 
     void load_media() {
-        auto loaded_surface = surface::load_image("res/texture.png");
-        texture_ = renderer_.create_texture_from_surface(loaded_surface);
+    
     }
 
     void run() {
@@ -39,8 +38,25 @@ public:
                 };
             }
 
+            renderer_.set_draw_color(0xff, 0xff, 0xff, 0xff);
             renderer_.clear();
-            renderer_.copy(texture_);
+
+            SDL_Rect fill_rect = {screen_width / 4, screen_height / 4, screen_width / 2, screen_height / 2};
+            renderer_.set_draw_color(0xff, 0x00, 0x00, 0xff);
+            renderer_.fill_rect(fill_rect);
+
+            SDL_Rect outline_rect = {screen_width / 6, screen_height / 6, screen_width * 2 / 3, screen_height * 2 / 3};
+            renderer_.set_draw_color(0x00, 0xff, 0x00, 0xff);
+            renderer_.draw_rect(outline_rect);
+
+            renderer_.set_draw_color(0x00, 0x00, 0xff, 0xff);
+            renderer_.draw_line(0, screen_height / 2, screen_width, screen_height / 2);
+
+            renderer_.set_draw_color(0xff, 0xff, 0x00, 0xff);
+            for (int i = 0; i < screen_height; i += 4) {
+                renderer_.draw_point(screen_width / 2, i);
+            }
+
             renderer_.present();
         }
     }

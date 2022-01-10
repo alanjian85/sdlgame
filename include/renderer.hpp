@@ -52,8 +52,24 @@ namespace sdlgame {
             SDL_RenderPresent(renderer_);
         }
 
-        void copy(const texture& tex) {
+        void copy(const texture& tex) noexcept {
             SDL_RenderCopy(renderer_, tex.native_handle(), nullptr, nullptr);
+        }
+
+        void fill_rect(SDL_Rect rect) noexcept {
+            SDL_RenderFillRect(renderer_, &rect);
+        }
+
+        void draw_rect(SDL_Rect rect) noexcept {
+            SDL_RenderDrawRect(renderer_, &rect);
+        }
+
+        void draw_line(int x1, int y1, int x2, int y2) noexcept {
+            SDL_RenderDrawLine(renderer_, x1, y1, x2, y2);
+        }
+
+        void draw_point(int x, int y) noexcept {
+            SDL_RenderDrawPoint(renderer_, x, y);
         }
     protected:
         SDL_Renderer* renderer_;
