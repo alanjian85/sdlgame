@@ -10,17 +10,27 @@ namespace sdlgame {
     public:
         using native_handle_type = SDL_Texture*;
 
-        texture() noexcept : texture_(nullptr) {}
+        texture() noexcept : texture_(nullptr), width_(0), height_(0) {}
 
-        explicit texture(SDL_Texture* tex, int width, int height) noexcept : texture_(tex), width_(width), height_(height) {}
+        explicit texture(SDL_Texture* tex, int width, int height) noexcept 
+            : texture_(tex),
+              width_(width),
+              height_(height) 
+        {
+
+        }
 
         texture(texture&& rhs) noexcept {
             texture_ = std::exchange(rhs.texture_, nullptr);
+            width_ = rhs.width_;
+            height_ = rhs.height_;
         }
 
         texture& operator=(texture&& rhs) noexcept {
             SDL_DestroyTexture(texture_);
             texture_ = std::exchange(rhs.texture_, nullptr);
+            width_ = rhs.width_;
+            height_ = rhs.height_;
             return *this;
         }
 
@@ -30,6 +40,14 @@ namespace sdlgame {
 
         native_handle_type native_handle() const noexcept {
             return texture_;
+        }
+
+        int width() const noexcept {
+            return width_;
+        }
+
+        int height() const noexcept {
+            return height_;
         }
     protected:
         SDL_Texture* texture_;

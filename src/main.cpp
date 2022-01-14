@@ -24,12 +24,12 @@ public:
     }
 
     void load_media() {
+        auto background_surface = surface::load_image("res/background.png");
+        background_texture_ = renderer_.create_texture(background_surface);
+
         auto foo_surface = surface::load_image("res/foo.png");
         foo_surface.set_color_key(foo_surface.map_color(0, 0xff, 0xff));
         foo_texture_ = renderer_.create_texture(foo_surface);
-
-        auto background_surface = surface::load_image("res/background.png");
-        background_texture_ = renderer_.create_texture(background_surface);
     }
 
     void run() {
@@ -46,6 +46,7 @@ public:
             renderer_.set_draw_color(0xff, 0xff, 0xff, 0xff);
             renderer_.clear();
 
+            renderer_.copy(background_texture_, 0, 0);
 
             renderer_.present();
         }
