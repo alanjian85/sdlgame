@@ -47,6 +47,7 @@ public:
             renderer_.clear();
 
             renderer_.copy(background_texture_, 0, 0);
+            renderer_.copy(foo_texture_, 240, 190);
 
             renderer_.present();
         }
