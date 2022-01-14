@@ -12,7 +12,7 @@ namespace sdlgame {
 
         texture() noexcept : texture_(nullptr) {}
 
-        explicit texture(SDL_Texture* tex) noexcept : texture_(tex) {}
+        explicit texture(SDL_Texture* tex, int width, int height) noexcept : texture_(tex), width_(width), height_(height) {}
 
         texture(texture&& rhs) noexcept {
             texture_ = std::exchange(rhs.texture_, nullptr);
@@ -33,6 +33,8 @@ namespace sdlgame {
         }
     protected:
         SDL_Texture* texture_;
+        int width_;
+        int height_;
     };
 }
 

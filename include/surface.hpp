@@ -38,6 +38,14 @@ namespace sdlgame {
         void set_color_key(Uint32 key) noexcept {
             SDL_SetColorKey(surface_, SDL_TRUE, key);
         }
+    
+        int width() const noexcept {
+            return surface_->w;
+        }
+
+        int height() const noexcept {
+            return surface_->h;
+        }
     protected:
         SDL_Surface* surface_;
     };

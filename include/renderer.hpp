@@ -41,7 +41,7 @@ namespace sdlgame {
         }
 
         texture create_texture(surface_view s) noexcept {
-            return texture(SDL_CreateTextureFromSurface(renderer_, s.native_handle()));
+            return texture(SDL_CreateTextureFromSurface(renderer_, s.native_handle()), s.width(), s.height());
         }
 
         void clear() noexcept {
